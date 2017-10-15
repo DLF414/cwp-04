@@ -16,13 +16,13 @@ client.connect(port, function () {
 
 client.on('data', function (data) {
     if (data === "ACK") {
-        client.write("COPY" + separator+"from.txt" + separator + "Direct/copyfile.txt");
+        client.write("COPY" + separator+"from.txt" + separator + "copyfile.txt");
     }
     if(data === "COPY DONE"){
-        client.write("ENCODE"+separator+"from.txt"+separator+"Direct/enccopyfile.enc"+separator+"d6");
+        client.write("ENCODE"+separator+"from.txt"+separator+"enccopyfile.enc"+separator+"6");
     }
-    if(data === "ENCODE DONE"){
-        client.write("DECODE"+separator+"Direct/enccopyfile.enc"+separator+"Direct/deccopyfile.txt"+separator+"d6");
+    if(data === "ENCODE DONE") {
+        client.write("DECODE" + separator + "enccopyfile.enc" + separator + "deccopyfile.txt" + separator + "6");
     }
     if(data === "DECODE DONE"){
         client.end();

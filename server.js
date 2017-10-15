@@ -19,6 +19,12 @@ const server = net.createServer((client) => {
         if (!error) {
             if (client.id === undefined && (data.toString() === "REMOTE")) {
                 client.id = Date.now().toString() + seed++;
+                fs.mkdir("D:/study/5 sem/node/cwp-04/"+client.id,(err) => {
+                    if(err)
+                    {
+                        console.log("Can't create a directory");
+                    }
+                });
                 clientModes[client.id] = data.toString();
                 client.write("ACK");
             }
@@ -36,15 +42,15 @@ const server = net.createServer((client) => {
             if (clientModes[client.id] === "REMOTE" && data.toString() !== "REMOTE") {
                 if (data.toString().startsWith("COPY")) {
                     let dataParts = data.toString().split(separator);
-                    CreateCopy(dataParts[1], dataParts[2], client);
+                    CreateCopy(dataParts[1],client.id+"/" + dataParts[2], client);
                 }
                 if (data.toString().startsWith("ENCODE")) {
                     let dataParts = data.toString().split(separator);
-                    EncodeFile(dataParts[1], dataParts[2], dataParts[3], client);
+                    EncodeFile(dataParts[1],client.id+"/" + dataParts[2], dataParts[3], client);
                 }
                 if (data.toString().startsWith("DECODE")) {
                     let dataParts = data.toString().split(separator);
-                    DecodeFile(dataParts[1], dataParts[2], dataParts[3], client);
+                    DecodeFile(client.id+"/" +dataParts[1], client.id+"/" + dataParts[2], dataParts[3], client);
                 }
             }
         }
