@@ -16,7 +16,16 @@ client.connect(port, function () {
 
 client.on('data', function (data) {
     if (data === "ACK") {
-        client.write("COPY" + separator+"D:/dir/from.txt?D:/dir/to.txt" + separator + "Direct/copyfile.txt");
+        client.write("COPY" + separator+"from.txt" + separator + "Direct/copyfile.txt");
+    }
+    if(data === "COPY DONE"){
+        client.write("ENCODE"+separator+"from.txt"+separator+"Direct/enccopyfile.enc"+separator+"d6");
+    }
+    if(data === "ENCODE DONE"){
+        client.write("DECODE"+separator+"Direct/enccopyfile.enc"+separator+"Direct/deccopyfile.txt"+separator+"d6");
+    }
+    if(data === "DECODE DONE"){
+        client.end();
     }
     if (data === "DEC") {
         console.log("DISCONNECT FROM SERVER BY DEC COMMAND");
